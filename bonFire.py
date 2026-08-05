@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 contador = 0
 
-digitos = list(' .:-=+*#%')
+digitos = args.digitos
 tempMaxima = len(digitos) - 1
 
 
@@ -50,7 +50,7 @@ def printarTela():
 while True:
 
     for x in range(tamanhoTerminal['x']):
-        tela[tamanhoTerminal['y'] - 1][x]['nivel'] = 8
+        tela[tamanhoTerminal['y'] - 1][x]['nivel'] = tempMaxima
 
     for y in range(tamanhoTerminal['y'] - 1):
         for x in range(tamanhoTerminal['x']):
