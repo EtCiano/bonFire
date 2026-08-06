@@ -2,23 +2,37 @@ import argparse
 import os
 import time
 import random
+from rgb_gradient import get_linear_gradient
 
 parser = argparse.ArgumentParser(description="Onda maneira no terminal")
-parser.add_argument("-u", "--digitos", default=' .:-=+*#%', help="Digitos que serão mostrados no fogo, de menor para maior temperatura.")
-parser.add_argument("-c", "--cor", help='muda a cor do fogo (use hex, sem hashtag (#))')
-parser.add_argument("-p", "--vazio", default=' ' ,help='Caractere usado na parte vazia')
+parser.add_argument("-u", "--digitos", default=' ._,;:!>^*#$&8%@', help="Digitos que serão mostrados no fogo, de menor para maior temperatura.")
+parser.add_argument("-c", "--cor", help='muda a cor do fogo (use hex)')
+# parser.add_argument("-p", "--vazio", default=' ' ,help='Caractere usado na parte vazia')
+parser.add_argument("-P", '--proporcao', type=int, default=50, help='proporção da tela ocupada pelo fogo, padrão é 75')
+parser.add_argument('-g', '--gradiente', help='adiciona gradiente no fogo (coloque DUAS cores em hex, separadas por espaço)')
 
 args = parser.parse_args()
 
 contador = 0
 
+tamanhoTerminal = {'x': os.get_terminal_size().columns, 'y': os.get_terminal_size().lines}
+
+proporcao = 4/(16**(tamanhoTerminal['y']/63))
+
 digitos = args.digitos
 tempMaxima = len(digitos) - 1
 
-
-tamanhoTerminal = {'x': os.get_terminal_size().columns, 'y': os.get_terminal_size().lines}
-
 tela = []
+
+gradiente = []
+
+if args.gradiente:
+    coresIniciais = [f'#{cor.lstrip("#")}' for cor in args.gradiente.split()]
+    
+    total_cores = max(tempMaxima + 1, len(coresIniciais))
+    
+    gradiente = get_linear_gradient(colors=coresIniciais, nb_colors=total_cores, return_format='hex')
+
 
 # gerar tela
 for i in range(tamanhoTerminal['y']):
@@ -41,8 +55,18 @@ def printarTela():
     for i in range(tamanhoTerminal['y']):
         linha = ''
         for j in range(tamanhoTerminal['x']):
-            linha += digitos[tela[i][j]['nivel']]
-        if args.cor:
+            nivel = tela[i][j]['nivel']
+            
+            if gradiente:
+                if nivel == 0:
+                    linha += digitos[nivel]
+                else:
+                    cor_hex = gradiente[min(nivel, len(gradiente) - 1)]
+                    linha += hex_para_ansi(cor_hex, digitos[nivel])
+            else:
+                linha += digitos[nivel]
+                
+        if args.cor and not gradiente:
             print(hex_para_ansi(args.cor, linha))
         else:
             print(linha)
@@ -57,7 +81,7 @@ while True:
 
             calor_baixo = tela[y + 1][x]['nivel']
 
-            resfriamento = random.randint(0, 1)
+            resfriamento = random.choices([0, 1], weights=[tamanhoTerminal['x']/(proporcao*len(digitos)*18), 1], k=1)[0]
 
             tela[y][x]['nivel'] = max(0, calor_baixo - resfriamento)
 
