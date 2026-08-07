@@ -2,7 +2,7 @@ import argparse
 import os
 import time
 import random
-from rgb_gradient import get_linear_gradient
+from rgb_gradient_custom import get_linear_gradient
 
 parser = argparse.ArgumentParser(description="Onda maneira no terminal")
 parser.add_argument("-u", "--digitos", default=' ._,;:!>^*#$&8%@', help="Digitos que serão mostrados no fogo, de menor para maior temperatura.")
