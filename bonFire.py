@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(description="Onda maneira no terminal")
 parser.add_argument("-u", "--digitos", default=' ._,;:!>^*#$&8%@', help="Digitos que serão mostrados no fogo, de menor para maior temperatura.")
 parser.add_argument("-c", "--cor", help='muda a cor do fogo (use hex)')
 # parser.add_argument("-p", "--vazio", default=' ' ,help='Caractere usado na parte vazia')
-parser.add_argument("-P", '--proporcao', type=int, default=50, help='proporção da tela ocupada pelo fogo, padrão é 75')
+parser.add_argument("-P", '--proporcao', type=int, default=50, help='proporção da tela ocupada pelo fogo, padrão é 50')
 parser.add_argument('-g', '--gradiente', help='adiciona gradiente no fogo (coloque as cores em hex, separadas por espaço)')
 
 args = parser.parse_args()
