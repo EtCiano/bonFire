@@ -1,5 +1,6 @@
 import argparse
 import os
+import subprocess
 import time
 import random
 from rgb_gradient_custom import get_linear_gradient
@@ -49,7 +50,7 @@ def hex_para_ansi(hex_code, texto):
 def printarTela():
     global tela
 
-    os.system('cls' if os.name == 'nt' else 'clear')
+    subprocess.run(['cls' if os.name == 'nt' else 'clear'], shell=True)
     
     for i in range(tamanhoTerminal['y']):
         linha = ''
