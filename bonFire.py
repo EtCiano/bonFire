@@ -13,8 +13,6 @@ parser.add_argument('-g', '--gradiente', help='adiciona gradiente no fogo (coloq
 
 args = parser.parse_args()
 
-contador = 0
-
 tamanhoTerminal = {'x': os.get_terminal_size().columns, 'y': os.get_terminal_size().lines}
 
 proporcao = 4/(16**(tamanhoTerminal['y']/63))
@@ -86,5 +84,4 @@ while True:
             tela[y][x]['nivel'] = max(0, calor_baixo - resfriamento)
 
     printarTela()
-    contador += 1
     time.sleep(0.1)
